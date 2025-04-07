@@ -1,15 +1,20 @@
+"""csvファイルからデータを集計するモジュール"""
+
 import polars as pl
 
 
 def fill_date(df: pl.LazyFrame) -> pl.LazyFrame:
+    """空白の日付を上の日付で埋める"""
     return df.with_columns(pl.col("date").forward_fill())
 
 
 def convert_number(df: pl.LazyFrame) -> pl.LazyFrame:
+    """黒点の番号と黒点数を数値に変換"""
     return df.cast({"no": pl.UInt8, "num": pl.UInt16})
 
 
 def convert_date(df: pl.LazyFrame) -> pl.LazyFrame:
+    """日付を文字列から日付のデータに変換"""
     return df.with_columns(
         pl.col("date").str.replace_all(r"([-/\.])", " ").str.split(by=" ")
     ).with_columns(
@@ -24,6 +29,16 @@ def convert_date(df: pl.LazyFrame) -> pl.LazyFrame:
 def convert_coord(
     df: pl.LazyFrame, *, col: str, dtype: type[pl.DataType]
 ) -> pl.LazyFrame:
+    """
+    経緯度を数値に変換
+
+    Parameters
+    ----------
+    col : str
+        経緯度の列名
+    dtype : type[pl.DataType]
+        経緯度の数値の型
+    """
     pat_left_sign = r"(?P<left_sign>[nsewpm+-]?)"
     pat_left = r"(?P<left>\d{1,3}(?:\.\d+)?)"
     pat_left = f"{pat_left_sign}{pat_left}"
@@ -84,6 +99,7 @@ def convert_coord(
 
 
 def sort(df: pl.LazyFrame) -> pl.LazyFrame:
+    """列と行の順序をソート"""
     return df.select(
         ["date", "no", "lat_min", "lat_max", "lon_min", "lon_max", "num"]
     ).sort("date", "no")
