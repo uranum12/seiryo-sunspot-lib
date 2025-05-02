@@ -17,6 +17,8 @@ dev = [
 test = [
     "pytest",
     "pytest-cov",
+    "tox",
+    "tox-uv",
 ]
 
 [build-system]
@@ -74,3 +76,18 @@ omit = ["tests/*"]
 
 [tool.coverage.report]
 exclude_also = ["if TYPE_CHECKING:"]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py310, py311, py312, lint
+
+[testenv]
+runner = uv-venv-lock-runner
+commands =
+    inv test
+
+[testenv:lint]
+commands =
+    inv lint
+"""
