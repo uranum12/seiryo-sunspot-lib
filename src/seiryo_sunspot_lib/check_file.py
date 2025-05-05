@@ -1,7 +1,7 @@
+import re
 from collections.abc import Iterable
 from csv import DictReader
 from datetime import date
-from re import compile
 
 _pat_case = r"(?i)"
 _pat_number = r"\d+"
@@ -31,11 +31,11 @@ _pat_lon = (
 )
 _pat_lon = rf"{_pat_case}(?P<not_detected>ND|{_pat_lon})"
 _patterns = {
-    "date": compile(_pat_date),
-    "no": compile(_pat_number),
-    "lat": compile(_pat_lat),
-    "lon": compile(_pat_lon),
-    "num": compile(_pat_number),
+    "date": re.compile(_pat_date),
+    "no": re.compile(_pat_number),
+    "lat": re.compile(_pat_lat),
+    "lon": re.compile(_pat_lon),
+    "num": re.compile(_pat_number),
 }
 
 
@@ -215,7 +215,7 @@ def validate_num(s: str) -> bool:
         >>> validate_num("-12")
         False
     """
-    pattern = compile(r"\d+")
+    pattern = re.compile(r"\d+")
     if match := pattern.fullmatch(s):
         num = match.group()
         return int(num) > 0
@@ -234,10 +234,8 @@ def validate_row(row: dict[str, str | None], *, first: bool) -> list[str]:
     """
     errors: list[str] = []
 
-    if (
-        row["date"] is None
-        or not validate_date(row["date"])
-        and (first or row["date"] != "")
+    if row["date"] is None or (
+        not validate_date(row["date"]) and (first or row["date"] != "")
     ):
         errors.append("date")
 
