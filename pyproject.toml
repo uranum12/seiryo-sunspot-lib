@@ -22,6 +22,7 @@ dev = [
 test = [
     "pytest",
     "pytest-cov",
+    "pytest-mock",
     "tox",
     "tox-uv",
 ]
