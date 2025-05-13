@@ -19,6 +19,7 @@ dev = [
     "invoke",
     "mypy",
     "ruff",
+    "types-python-dateutil",
 ]
 test = [
     "pytest",
@@ -69,6 +70,7 @@ python_version = "3.10"
 show_error_context = true
 show_column_numbers = true
 ignore_missing_imports = true
+disallow_untyped_calls = false
 
 [tool.pytest.ini_options]
 addopts = [

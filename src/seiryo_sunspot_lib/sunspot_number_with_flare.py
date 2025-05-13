@@ -188,7 +188,7 @@ def draw_sunspot_number_with_flare(
 
     ax2 = ax1.twinx()
 
-    ax2.plot(  # type: ignore[attr-defined]
+    ax2.plot(
         df["date"],
         df["flare_total"],
         ls=config.line_flare.style,
@@ -217,7 +217,7 @@ def draw_sunspot_number_with_flare(
     ax2.grid()
 
     h1, l1 = ax1.get_legend_handles_labels()
-    h2, l2 = ax2.get_legend_handles_labels()  # type: ignore[attr-defined]
+    h2, l2 = ax2.get_legend_handles_labels()
     ax1.legend(
         h1 + h2,
         l1 + l2,
@@ -285,7 +285,7 @@ def draw_sunspot_number_with_flare_hemispheric(  # noqa: PLR0915
         ms=config.line_north_sunspot.marker.size,
     )
 
-    ax1_twin.plot(  # type: ignore[attr-defined]
+    ax1_twin.plot(
         df["date"],
         df["flare_north"],
         ls=config.line_north_flare.style,
@@ -341,7 +341,7 @@ def draw_sunspot_number_with_flare_hemispheric(  # noqa: PLR0915
     ax1_twin.grid()
 
     h1, l1 = ax1.get_legend_handles_labels()
-    h1_twin, l1_twin = ax1_twin.get_legend_handles_labels()  # type: ignore[attr-defined]
+    h1_twin, l1_twin = ax1_twin.get_legend_handles_labels()
     ax1.legend(
         h1 + h1_twin,
         l1 + l1_twin,
@@ -372,7 +372,7 @@ def draw_sunspot_number_with_flare_hemispheric(  # noqa: PLR0915
         ms=config.line_south_sunspot.marker.size,
     )
 
-    ax2_twin.plot(  # type: ignore[attr-defined]
+    ax2_twin.plot(
         df["date"],
         df["flare_south"],
         ls=config.line_south_flare.style,
@@ -443,7 +443,7 @@ def draw_sunspot_number_with_flare_hemispheric(  # noqa: PLR0915
     ax2_twin.grid()
 
     h2, l2 = ax2.get_legend_handles_labels()
-    h2_twin, l2_twin = ax2_twin.get_legend_handles_labels()  # type: ignore[attr-defined]
+    h2_twin, l2_twin = ax2_twin.get_legend_handles_labels()
     ax2.legend(
         h2 + h2_twin,
         l2 + l2_twin,

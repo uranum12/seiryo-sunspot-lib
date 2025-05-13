@@ -615,7 +615,7 @@ def draw_ratio_diff_2(
 
     ax2 = ax1.twinx()
 
-    ax2.plot(  # type: ignore[attr-defined]
+    ax2.plot(
         df["date"],
         df["diff"],
         ls=config.line_diff.style,
@@ -644,7 +644,7 @@ def draw_ratio_diff_2(
     ax2.grid()
 
     h1, l1 = ax1.get_legend_handles_labels()
-    h2, l2 = ax2.get_legend_handles_labels()  # type: ignore[attr-defined]
+    h2, l2 = ax2.get_legend_handles_labels()
     ax1.legend(
         h1 + h2,
         l1 + l2,
