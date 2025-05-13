@@ -11,8 +11,8 @@ def fmt(c: Context) -> None:
 @task
 def lint(c: Context) -> None:
     c.run("ruff format --check src tests", pty=True)
-    c.run("ruff check src tests", pty=True)
-    c.run("mypy src tests", pty=True)
+    c.run("ruff check src tests", pty=True, warn=True)
+    c.run("mypy src tests", pty=True, warn=True)
 
 
 @task
