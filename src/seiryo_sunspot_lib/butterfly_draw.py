@@ -101,7 +101,7 @@ def draw_butterfly_diagram(
 
     ax.set_yticks([i[0] for i in ylabel])
     ax.set_yticklabels(
-        [i[1] for i in ylabel],
+        [str(i[1]) for i in ylabel],
         fontfamily=config.yaxis.ticks.font_family,
         fontsize=config.yaxis.ticks.font_size,
     )

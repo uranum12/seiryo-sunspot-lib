@@ -76,7 +76,7 @@ def calc_ratio_and_diff(df: pl.DataFrame, factor: float) -> pl.DataFrame:
 
 def calc_factor(df: pl.DataFrame) -> float:
     popt, _ = optimize.curve_fit(lambda x, a: x * a, df["silso"], df["seiryo"])
-    return popt[0]
+    return float(popt[0])
 
 
 def calc_r2(df: pl.DataFrame, factor: float) -> float:
