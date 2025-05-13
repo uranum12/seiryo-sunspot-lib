@@ -64,6 +64,15 @@ convention = "numpy"
 [tool.ruff.lint.isort]
 split-on-trailing-comma = false
 
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = [
+  "S101",    # assert
+  "PLR0913", # too-many-arguments
+  "PD901",   # pandas-df-variable-name
+  "INP001",  # implicit-namespace-package
+  "FBT001",  # boolean-type-hint-positional-argument
+]
+
 [tool.mypy]
 strict = true
 python_version = "3.10"

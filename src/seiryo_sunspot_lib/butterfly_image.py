@@ -10,14 +10,21 @@ def create_line(
 ) -> npt.NDArray[np.uint8]:
     """蝶形図の一列分のデータを作成する
 
-    Args:
-        data_min (list[int]): データの最小値
-        data_max (list[int]): データの最大値
-        lat_min (int): 緯度の最小値
-        lat_max (int): 緯度の最大値
+    Parameters
+    ----------
+    data_min : list[int]
+        データの最小値
+    data_max : list[int]
+        データの最大値
+    lat_min : int
+        緯度の最小値
+    lat_max : int
+        緯度の最大値
 
-    Returns:
-        npt.NDArray[np.uint8]: 一列分のデータ
+    Returns
+    -------
+    npt.NDArray[np.uint8]
+        一列分のデータ
     """
     # numpy配列に変換
     arr_min = np.array(data_min)
@@ -57,12 +64,17 @@ def create_image(
 ) -> npt.NDArray[np.uint8]:
     """緯度データから蝶形図のデータを作成する
 
-    Args:
-        df (pl.DataFrame): 緯度データ
-        info (ButterflyInfo): 蝶形図の情報
+    Parameters
+    ----------
+    df : pl.DataFrame
+        緯度データ
+    info : ButterflyInfo
+        蝶形図の情報
 
-    Returns:
-        npt.NDArray[np.uint8]: 蝶形図の画像データ
+    Returns
+    -------
+    npt.NDArray[np.uint8]
+        蝶形図の画像データ
     """
     lines: list[npt.NDArray[np.uint8]] = []
     for data in df.iter_rows(named=True):

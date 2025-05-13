@@ -8,11 +8,15 @@ def create_expected_group_numbers(no: int) -> pl.Series:
 def find_invalid_group_number(df: pl.DataFrame) -> pl.DataFrame:
     """不正なグループ番号を検索する
 
-    Args:
-        df (pl.DataFrame): 黒点群データ
+    Parameters
+    ----------
+    df : pl.DataFrame
+        黒点群データ
 
-    Returns:
-        pl.DataFrame: 不正値を含む行のみの新しいデータフレーム
+    Returns
+    -------
+    pl.DataFrame
+        不正値を含む行のみの新しいデータフレーム
     """
     return (
         df.lazy()
@@ -38,12 +42,17 @@ def find_invalid_group_number(df: pl.DataFrame) -> pl.DataFrame:
 def find_invalid_lat_range(df: pl.DataFrame, threshold: int) -> pl.DataFrame:
     """不正な範囲に存在する緯度を検索する
 
-    Args:
-        df (pl.DataFrame): 黒点群データ
-        threshold (int): 緯度の閾値
+    Parameters
+    ----------
+    df : pl.DataFrame
+        黒点群データ
+    threshold : int
+        緯度の閾値
 
-    Returns:
-        pl.DataFrame: 不正値を含む行のみの新しいデータフレーム
+    Returns
+    -------
+    pl.DataFrame
+        不正値を含む行のみの新しいデータフレーム
     """
     return df.filter(
         pl.any_horizontal(
@@ -58,13 +67,19 @@ def find_invalid_lon_range(
 ) -> pl.DataFrame:
     """不正な範囲に存在する経度を検索する
 
-    Args:
-        df (pl.DataFrame): 黒点群データ
-        min_threshold (int): 経度の閾値の最小
-        max_threshold (int): 経度の閾値の最大
+    Parameters
+    ----------
+    df : pl.DataFrame
+        黒点群データ
+    min_threshold : int
+        経度の閾値の最小
+    max_threshold : int
+        経度の閾値の最大
 
-    Returns:
-        pl.DataFrame: 不正値を含む行のみの新しいデータフレーム
+    Returns
+    -------
+    pl.DataFrame
+        不正値を含む行のみの新しいデータフレーム
     """
     return df.filter(
         pl.any_horizontal(
@@ -77,12 +92,17 @@ def find_invalid_lon_range(
 def find_invalid_lat_interval(df: pl.DataFrame, interval: int) -> pl.DataFrame:
     """不正な間隔を持つ緯度を検索する
 
-    Args:
-        df (pl.DataFrame): 黒点群データ
-        interval (int): 緯度の間隔の最大値
+    Parameters
+    ----------
+    df : pl.DataFrame
+        黒点群データ
+    interval : int
+        緯度の間隔の最大値
 
-    Returns:
-        pl.DataFrame: 不正値を含む行のみの新しいデータフレーム
+    Returns
+    -------
+    pl.DataFrame
+        不正値を含む行のみの新しいデータフレーム
     """
     return df.with_columns(
         (pl.col("lat_max") - pl.col("lat_min")).alias("interval")
@@ -92,12 +112,17 @@ def find_invalid_lat_interval(df: pl.DataFrame, interval: int) -> pl.DataFrame:
 def find_invalid_lon_interval(df: pl.DataFrame, interval: int) -> pl.DataFrame:
     """不正な間隔を持つ経度を検索する
 
-    Args:
-        df (pl.DataFrame): 黒点群データ
-        interval (int): 経度の間隔の最大値
+    Parameters
+    ----------
+    df : pl.DataFrame
+        黒点群データ
+    interval : int
+        経度の間隔の最大値
 
-    Returns:
-        pl.DataFrame: 不正値を含む行のみの新しいデータフレーム
+    Returns
+    -------
+    pl.DataFrame
+        不正値を含む行のみの新しいデータフレーム
     """
     return df.with_columns(
         (pl.col("lon_max") - pl.col("lon_min")).alias("interval")

@@ -15,13 +15,19 @@ def create_date_index(
 ) -> npt.NDArray[np.datetime64]:
     """蝶形図の日付のインデックスを作成する
 
-    Args:
-        start (date): 開始日
-        end (date): 終了日
-        interval (str): 期間
+    Parameters
+    ----------
+    start : date
+        開始日
+    end : date
+        終了日
+    interval : str
+        期間
 
-    Returns:
-        npt.NDArray[np.datetime64]: 日付のインデックス
+    Returns
+    -------
+    npt.NDArray[np.datetime64]
+        日付のインデックス
     """
     return pl.date_range(start, end, interval, eager=True).to_numpy()
 
@@ -29,12 +35,17 @@ def create_date_index(
 def create_lat_index(lat_min: int, lat_max: int) -> npt.NDArray[np.int8]:
     """緯度のインデックスを作成する
 
-    Args:
-        lat_min (int): 緯度の最小値
-        lat_max (int): 緯度の最大値
+    Parameters
+    ----------
+    lat_min : int
+        緯度の最小値
+    lat_max : int
+        緯度の最大値
 
-    Returns:
-        npt.NDArray[np.int8]: 緯度のインデックス
+    Returns
+    -------
+    npt.NDArray[np.int8]
+        緯度のインデックス
     """
     lat_range = np.arange(lat_min, lat_max + 1, 1, dtype=np.int8)[::-1]
     return np.insert(np.abs(lat_range), np.arange(1, len(lat_range)), -1)
@@ -45,13 +56,19 @@ def draw_butterfly_diagram(
 ) -> Figure:
     """蝶形図データを基に画像を作成する
 
-    Args:
-        img (npt.NDArray[np.uint8]): 蝶形図のデータ
-        info (ButterflyInfo): 蝶形図の情報
-        config (ButterflyDiagram): グラフの設定
+    Parameters
+    ----------
+    img : npt.NDArray[np.uint8]
+        蝶形図のデータ
+    info : ButterflyInfo
+        蝶形図の情報
+    config : ButterflyDiagram
+        グラフの設定
 
-    Returns:
-        Figure: 作成した蝶形図
+    Returns
+    -------
+    Figure
+        作成した蝶形図
     """
     date_index = create_date_index(
         info.date_start, info.date_end, info.date_interval.to_interval()

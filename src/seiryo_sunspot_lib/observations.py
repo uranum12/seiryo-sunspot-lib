@@ -12,11 +12,15 @@ from seiryo_sunspot_lib.observations_config import ObservationsMonthly
 def calc_date_range(df: pl.LazyFrame) -> tuple[date, date]:
     """日付の開始日と最終日を算出する
 
-    Args:
-        df (pl.LazyFrame): 黒点数データ
+    Parameters
+    ----------
+    df : pl.LazyFrame
+        黒点数データ
 
-    Returns:
-        tuple[date, date]: 開始日と最終日
+    Returns
+    -------
+    tuple[date, date]
+        開始日と最終日
     """
     date_range: dict[str, date] = (
         df.select(pl.min("date").alias("start"), pl.max("date").alias("end"))
@@ -29,12 +33,17 @@ def calc_date_range(df: pl.LazyFrame) -> tuple[date, date]:
 def adjust_dates(start: date, end: date) -> tuple[date, date]:
     """日付の範囲を月ごとに調整する
 
-    Args:
-        start (date): 開始日
-        end (date): 最終日
+    Parameters
+    ----------
+    start : date
+        開始日
+    end : date
+        最終日
 
-    Returns:
-        tuple[date, date]: 開始日と最終日
+    Returns
+    -------
+    tuple[date, date]
+        開始日と最終日
     """
     start = start.replace(day=1)
     end += relativedelta(months=1, day=1, days=-1)
@@ -44,15 +53,20 @@ def adjust_dates(start: date, end: date) -> tuple[date, date]:
 def calc_dayly_obs(df: pl.LazyFrame, start: date, end: date) -> pl.LazyFrame:
     """日ごとの観測日数を算出する
 
-    Args:
-        df (pl.LazyFrame): 黒点数データ
-        start (date): 開始日
-        end (date): 終了日
+    Parameters
+    ----------
+    df : pl.LazyFrame
+        黒点数データ
+    start : date
+        開始日
+    end : date
+        終了日
 
-    Returns:
-        pl.LazyFrame: 日ごとの観測
+    Returns
+    -------
+    pl.LazyFrame
+        日ごとの観測
     """
-
     return (
         pl.LazyFrame(
             {"date": pl.date_range(start, end, interval="1d", eager=True)}
@@ -72,11 +86,15 @@ def calc_dayly_obs(df: pl.LazyFrame, start: date, end: date) -> pl.LazyFrame:
 def calc_monthly_obs(df: pl.LazyFrame) -> pl.LazyFrame:
     """月ごとの観測日数を算出する
 
-    Args:
-        df (pl.LazyFrame): 日ごとの観測日数データ
+    Parameters
+    ----------
+    df : pl.LazyFrame
+        日ごとの観測日数データ
 
-    Returns:
-        pl.LazyFrame: 月ごとの観測日数
+    Returns
+    -------
+    pl.LazyFrame
+        月ごとの観測日数
     """
     return (
         df.with_columns(pl.col("date").dt.truncate("1mo"))
@@ -91,12 +109,17 @@ def draw_monthly_obs_days(
 ) -> Figure:
     """月ごとの観測日数のグラフを作成する
 
-    Args:
-        df (pl.DataFrame): 月ごとの観測日数
-        config (ObservationsDays): グラフの設定
+    Parameters
+    ----------
+    df : pl.DataFrame
+        月ごとの観測日数
+    config : ObservationsDays
+        グラフの設定
 
-    Returns:
-        Figure: 作成したグラフ
+    Returns
+    -------
+    Figure
+        作成したグラフ
     """
     date_min: date = df.select(pl.min("date")).item()
     date_max: date = df.select(pl.max("date")).item()

@@ -16,8 +16,10 @@ class DateDelta:
     def __post_init__(self: "DateDelta") -> None:
         """初期化後の入力値チェック
 
-        Raises:
-            ValueError: 入力値が不正値の時に送出
+        Raises
+        ------
+        ValueError
+            入力値が不正値の時に送出
         """
         values = self.to_dict().values()
         if all(value == 0 for value in values):
@@ -30,8 +32,10 @@ class DateDelta:
     def to_dict(self: "DateDelta") -> dict[str, int]:
         """辞書へ変換
 
-        Returns:
-            dict[str, int]: 変換後の辞書
+        Returns
+        -------
+        dict[str, int]
+            変換後の辞書
         """
         return asdict(self)
 
@@ -41,8 +45,10 @@ class DateDelta:
     def to_interval(self: "DateDelta") -> str:
         """Polarsが受け取る期間の文字列へ変換
 
-        Returns:
-            str: 変換後の文字列
+        Returns
+        -------
+        str
+            変換後の文字列
         """
         years = self._format_time(self.years, "y")
         months = self._format_time(self.months, "mo")
@@ -52,8 +58,10 @@ class DateDelta:
     def isoformat(self: "DateDelta") -> str:
         """ISO8601の形式へ変換
 
-        Returns:
-            str: 変換後の文字列
+        Returns
+        -------
+        str
+            変換後の文字列
         """
         years = self._format_time(self.years, "Y")
         months = self._format_time(self.months, "M")
@@ -94,8 +102,10 @@ class ButterflyInfo:
     def __post_init__(self: "ButterflyInfo") -> None:
         """初期化後の入力値チェック
 
-        Raises:
-            ValueError: 入力値が不正値の時に送出
+        Raises
+        ------
+        ValueError
+            入力値が不正値の時に送出
         """
         if self.lat_min > self.lat_max:
             msg = "latitude minimum value cannot be greater than maximum value"
@@ -107,8 +117,10 @@ class ButterflyInfo:
     def to_dict(self: "ButterflyInfo") -> dict[str, int | date | DateDelta]:
         """辞書へ変換
 
-        Returns:
-            dict[str, int | date | DateDelta]: 変換後の辞書
+        Returns
+        -------
+        dict[str, int | date | DateDelta]
+            変換後の辞書
         """
         return {
             field.name: getattr(self, field.name) for field in fields(self)
@@ -133,11 +145,15 @@ class ButterflyInfo:
 def calc_date_limit(df: pl.LazyFrame) -> tuple[date, date]:
     """日付の開始日と最終日を算出する
 
-    Args:
-        df (pl.LazyFrame): 黒点群データ
+    Parameters
+    ----------
+    df : pl.LazyFrame
+        黒点群データ
 
-    Returns:
-        tuple[date, date]: 開始日と最終日
+    Returns
+    -------
+    tuple[date, date]
+        開始日と最終日
     """
     date_range: dict[str, date] = (
         df.select(pl.min("date").alias("start"), pl.max("date").alias("end"))
@@ -150,12 +166,17 @@ def calc_date_limit(df: pl.LazyFrame) -> tuple[date, date]:
 def adjust_dates(start: date, end: date) -> tuple[date, date]:
     """日付の範囲を月初めに調整する
 
-    Args:
-        start (date): 開始日
-        end (date): 最終日
+    Parameters
+    ----------
+    start : date
+        開始日
+    end : date
+        最終日
 
-    Returns:
-        tuple[date, date]: 開始日と最終日
+    Returns
+    -------
+    tuple[date, date]
+        開始日と最終日
     """
     return start.replace(day=1), end.replace(day=1)
 
@@ -163,12 +184,17 @@ def adjust_dates(start: date, end: date) -> tuple[date, date]:
 def agg_lat(df: pl.LazyFrame, interval: str) -> pl.LazyFrame:
     """緯度を期間ごとに集計.
 
-    Args:
-        df (pl.LazyFrame): 黒点群データ
-        interval (str): 区切る期間
+    Parameters
+    ----------
+    df : pl.LazyFrame
+        黒点群データ
+    interval : str
+        区切る期間
 
-    Returns:
-        pl.LazyFrame: 緯度データ
+    Returns
+    -------
+    pl.LazyFrame
+        緯度データ
     """
     return (
         df.with_columns(pl.col("date").dt.truncate(interval))
@@ -184,14 +210,21 @@ def fill_lat(
 ) -> pl.LazyFrame:
     """範囲内の空白を空データで埋める
 
-    Args:
-        df (pl.LazyFrame): 緯度データ
-        start (date): 開始日
-        end (date): 終了日
-        interval (str): 区切る期間
+    Parameters
+    ----------
+    df : pl.LazyFrame
+        緯度データ
+    start : date
+        開始日
+    end : date
+        終了日
+    interval : str
+        区切る期間
 
-    Returns:
-        pl.LazyFrame: 緯度データ
+    Returns
+    -------
+    pl.LazyFrame
+        緯度データ
     """
     return (
         pl.LazyFrame({"date": pl.date_range(start, end, interval, eager=True)})
@@ -204,12 +237,17 @@ def fill_lat(
 def calc_lat(df: pl.LazyFrame, info: ButterflyInfo) -> pl.DataFrame:
     """緯度データを算出する
 
-    Args:
-        df (pl.LazyFrame): 黒点群データ
-        info (ButterflyInfo): 蝶形図の情報
+    Parameters
+    ----------
+    df : pl.LazyFrame
+        黒点群データ
+    info : ButterflyInfo
+        蝶形図の情報
 
-    Returns:
-        pl.DataFrame: 緯度データ
+    Returns
+    -------
+    pl.DataFrame
+        緯度データ
     """
     return (
         df.pipe(agg_lat, interval=info.date_interval.to_interval())

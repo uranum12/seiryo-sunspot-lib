@@ -42,21 +42,26 @@ _patterns = {
 def validate_date(s: str) -> bool:
     """日付の文字列が妥当か検査
 
-    Args:
-        s (str): 入力された文字列
+    Parameters
+    ----------
+    s : str
+        入力された文字列
 
-    Returns:
-        bool: 結果
+    Returns
+    -------
+    bool
+        結果
 
-    Examples:
-        >>> validate_date("2020/8/10")
-        True
-        >>> validate_date("2020-08-10")
-        True
-        >>> validate_date("2020/8-20")
-        False
-        >>> validate_date("2020/13/42")
-        False
+    Examples
+    --------
+    >>> validate_date("2020/8/10")
+    True
+    >>> validate_date("2020-08-10")
+    True
+    >>> validate_date("2020/8-20")
+    False
+    >>> validate_date("2020/13/42")
+    False
     """
     pattern = _patterns["date"]
     if match := pattern.fullmatch(s):
@@ -74,19 +79,24 @@ def validate_date(s: str) -> bool:
 def validate_no(s: str) -> bool:
     """黒点群番号が妥当か検査
 
-    Args:
-        s (str): 入力された文字列
+    Parameters
+    ----------
+    s : str
+        入力された文字列
 
-    Returns:
-        bool: 結果
+    Returns
+    -------
+    bool
+        結果
 
-    Examples:
-        >>> validate_no("0")
-        True
-        >>> validate_no("12")
-        True
-        >>> validate_no("-2")
-        False
+    Examples
+    --------
+    >>> validate_no("0")
+    True
+    >>> validate_no("12")
+    True
+    >>> validate_no("-2")
+    False
     """
     pattern = _patterns["no"]
     return bool(pattern.fullmatch(s))
@@ -95,35 +105,40 @@ def validate_no(s: str) -> bool:
 def validate_lat(s: str) -> bool:
     """緯度が妥当か検査
 
-    Args:
-        s (str): 入力された文字列
+    Parameters
+    ----------
+    s : str
+        入力された文字列
 
-    Returns:
-        bool: 結果
+    Returns
+    -------
+    bool
+        結果
 
-    Examples:
-        >>> validate_lon("ND")
-        True
-        >>> validate_lat("12")
-        True
-        >>> validate_lat("100")
-        False
-        >>> validate_lat("12.3")
-        True
-        >>> validate_lat("2~3")
-        True
-        >>> validate_lat("S12")
-        True
-        >>> validate_lat("W3")
-        False
-        >>> validate_lat("N6~12")
-        True
-        >>> validate_lat("0~N6")
-        True
-        >>> validate_lat("N6~N12")
-        True
-        >>> validate_lat("N6~-6")
-        False
+    Examples
+    --------
+    >>> validate_lon("ND")
+    True
+    >>> validate_lat("12")
+    True
+    >>> validate_lat("100")
+    False
+    >>> validate_lat("12.3")
+    True
+    >>> validate_lat("2~3")
+    True
+    >>> validate_lat("S12")
+    True
+    >>> validate_lat("W3")
+    False
+    >>> validate_lat("N6~12")
+    True
+    >>> validate_lat("0~N6")
+    True
+    >>> validate_lat("N6~N12")
+    True
+    >>> validate_lat("N6~-6")
+    False
     """
     pattern = _patterns["lat"]
     lat_max = 90
@@ -152,27 +167,32 @@ def validate_lat(s: str) -> bool:
 def validate_lon(s: str) -> bool:
     """経度が妥当か検査
 
-    Args:
-        s (str): 入力された文字列
+    Parameters
+    ----------
+    s : str
+        入力された文字列
 
-    Returns:
-        bool: 結果
+    Returns
+    -------
+    bool
+        結果
 
-    Examples:
-        >>> validate_lon("nd")
-        True
-        >>> validate_lon("12")
-        True
-        >>> validate_lon("E12")
-        True
-        >>> validate_lon("N12")
-        False
-        >>> validate_lon("W12~15")
-        True
-        >>> validate_lon("12~-15")
-        True
-        >>> validate_lon("12~W15")
-        False
+    Examples
+    --------
+    >>> validate_lon("nd")
+    True
+    >>> validate_lon("12")
+    True
+    >>> validate_lon("E12")
+    True
+    >>> validate_lon("N12")
+    False
+    >>> validate_lon("W12~15")
+    True
+    >>> validate_lon("12~-15")
+    True
+    >>> validate_lon("12~W15")
+    False
     """
     pattern = _patterns["lon"]
     lon_max = 360
@@ -201,19 +221,24 @@ def validate_lon(s: str) -> bool:
 def validate_num(s: str) -> bool:
     """黒点数が妥当か検査
 
-    Args:
-        s (str): 入力された文字列
+    Parameters
+    ----------
+    s : str
+        入力された文字列
 
-    Returns:
-        bool: 結果
+    Returns
+    -------
+    bool
+        結果
 
-    Examples:
-        >>> validate_num("12")
-        True
-        >>> validate_num("0")
-        False
-        >>> validate_num("-12")
-        False
+    Examples
+    --------
+    >>> validate_num("12")
+    True
+    >>> validate_num("0")
+    False
+    >>> validate_num("-12")
+    False
     """
     pattern = re.compile(r"\d+")
     if match := pattern.fullmatch(s):
@@ -225,12 +250,17 @@ def validate_num(s: str) -> bool:
 def validate_row(row: dict[str, str | None], *, first: bool) -> list[str]:
     """入力された行が妥当か検査
 
-    Args:
-        row (dict[str, str | None]): 入力された行
-        first (bool): 行が一番初めかどうか
+    Parameters
+    ----------
+    row : dict[str, str | None]
+        入力された行
+    first : bool
+        行が一番初めかどうか
 
-    Returns:
-        list[str]: 不正と検出された列名
+    Returns
+    -------
+    list[str]
+        不正と検出された列名
     """
     errors: list[str] = []
 
@@ -261,11 +291,15 @@ def validate_row(row: dict[str, str | None], *, first: bool) -> list[str]:
 def validate_file(file: Iterable[str]) -> list[dict]:
     """CSVファイル全体が妥当か検査
 
-    Args:
-        file (Iterable[str]): CSVファイル
+    Parameters
+    ----------
+    file : Iterable[str]
+        CSVファイル
 
-    Returns:
-        list[dict]: 不正と検出された箇所と種類
+    Returns
+    -------
+    list[dict]
+        不正と検出された箇所と種類
     """
     reader = DictReader(file, restkey="over", strict=True)
 
