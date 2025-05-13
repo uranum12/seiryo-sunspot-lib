@@ -1,6 +1,6 @@
+import re
 from csv import DictReader
 from pathlib import Path
-from re import compile
 
 from pydantic import BaseModel
 
@@ -13,7 +13,7 @@ class FinderResult(BaseModel):
 def finder(
     search_path: Path, year: int, month: int, day: int
 ) -> list[FinderResult]:
-    pattern = compile(
+    pattern = re.compile(
         r"(?P<year>\d{4})"
         r"(?:[-/\. ])"
         r"(?P<month>\d{1,2})"
