@@ -1,6 +1,7 @@
 import json
 from dataclasses import asdict, dataclass, fields
 from datetime import date
+from typing import TypedDict
 
 import polars as pl
 
@@ -89,6 +90,14 @@ class DateDelta:
         return cls(years=y, months=m, days=d)
 
 
+class ButterflyInfoDict(TypedDict):
+    lat_min: int
+    lat_max: int
+    date_start: str
+    date_end: str
+    date_interval: str
+
+
 @dataclass(frozen=True, slots=True)
 class ButterflyInfo:
     """蝶形図の情報"""
@@ -132,7 +141,9 @@ class ButterflyInfo:
         )
 
     @classmethod
-    def from_dict(cls: type["ButterflyInfo"], data: dict) -> "ButterflyInfo":
+    def from_dict(
+        cls: type["ButterflyInfo"], data: ButterflyInfoDict
+    ) -> "ButterflyInfo":
         return cls(
             data["lat_min"],
             data["lat_max"],

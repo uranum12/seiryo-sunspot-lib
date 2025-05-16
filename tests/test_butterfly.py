@@ -25,7 +25,7 @@ def test_date_delta(
     in_years: int,
     in_months: int,
     in_days: int,
-    out_dict: dict,
+    out_dict: dict[str, int],
     out_interval: str,
     out_isoformat: str,
 ) -> None:
@@ -140,7 +140,7 @@ def test_butterfly_info() -> None:
     ],
 )
 def test_butterfly_info_from_dict(
-    in_dict: dict[str, int | str],
+    in_dict: butterfly.ButterflyInfoDict,
     out_lat_min: int,
     out_lat_max: int,
     out_date_start: date,

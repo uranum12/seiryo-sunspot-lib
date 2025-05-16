@@ -2,6 +2,7 @@ import re
 from collections.abc import Iterable
 from csv import DictReader
 from datetime import date
+from typing import Literal, TypeAlias, TypedDict
 
 _pat_case = r"(?i)"
 _pat_number = r"\d+"
@@ -37,6 +38,26 @@ _patterns = {
     "lon": re.compile(_pat_lon),
     "num": re.compile(_pat_number),
 }
+
+
+class ErrHeader(TypedDict):
+    error_type: Literal["header"]
+    header: None | list[str]
+
+
+class ErrRow(TypedDict):
+    error_type: Literal["row"]
+    line: int
+    over: list[str]
+
+
+class ErrFields(TypedDict):
+    error_type: Literal["field"]
+    line: int
+    fields: list[str]
+
+
+Error: TypeAlias = ErrHeader | ErrRow | ErrFields
 
 
 def validate_date(s: str) -> bool:
@@ -288,7 +309,7 @@ def validate_row(row: dict[str, str | None], *, first: bool) -> list[str]:
     return errors
 
 
-def validate_file(file: Iterable[str]) -> list[dict]:
+def validate_file(file: Iterable[str]) -> list[Error]:
     """CSVファイル全体が妥当か検査
 
     Parameters
@@ -305,15 +326,16 @@ def validate_file(file: Iterable[str]) -> list[dict]:
 
     fields = reader.fieldnames
     if fields is None or fields != ["date", "no", "lat", "lon", "num"]:
-        return [{"type": "header", "header": fields}]
+        header = None if fields is None else list(fields)
+        return [{"error_type": "header", "header": header}]
 
     first = True
-    errors: list[dict[str, str | int | list[str]]] = []
+    errors: list[Error] = []
     for row in reader:
         if "over" in row:
             errors.append(
                 {
-                    "type": "row",
+                    "error_type": "row",
                     "line": reader.line_num,
                     "over": list(row["over"]),
                 }
@@ -321,7 +343,7 @@ def validate_file(file: Iterable[str]) -> list[dict]:
 
         if len(ret := validate_row(row, first=first)) != 0:
             errors.append(
-                {"type": "field", "line": reader.line_num, "fields": ret}
+                {"error_type": "field", "line": reader.line_num, "fields": ret}
             )
 
         if first:

@@ -135,7 +135,7 @@ def test_merge_info_with_error() -> None:
     ],
 )
 def test_create_merged_image(
-    in_data: list[dict[str, list]], out_img: list[list[int]]
+    in_data: list[dict[str, list[date | list[int]]]], out_img: list[list[int]]
 ) -> None:
     dfl_in = [
         pl.DataFrame(

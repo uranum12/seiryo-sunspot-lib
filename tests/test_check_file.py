@@ -275,12 +275,12 @@ def test_validate_row(
             ],
             [
                 {
-                    "type": "header",
+                    "error_type": "header",
                     "header": ["dat", "No", "lat", "long", "num"],
                 }
             ],
         ),
-        ([], [{"type": "header", "header": None}]),
+        ([], [{"error_type": "header", "header": None}]),
         (
             [
                 "date,no,lat,lon,num\n",
@@ -289,8 +289,8 @@ def test_validate_row(
                 "2020/9/2,0,,,,\n",
             ],
             [
-                {"type": "row", "line": 3, "over": ["foo"]},
-                {"type": "row", "line": 4, "over": [""]},
+                {"error_type": "row", "line": 3, "over": ["foo"]},
+                {"error_type": "row", "line": 4, "over": [""]},
             ],
         ),
         (
@@ -301,13 +301,15 @@ def test_validate_row(
                 "2020/9/2,0,,\n",
             ],
             [
-                {"type": "field", "line": 2, "fields": ["date"]},
-                {"type": "field", "line": 4, "fields": ["num"]},
+                {"error_type": "field", "line": 2, "fields": ["date"]},
+                {"error_type": "field", "line": 4, "fields": ["num"]},
             ],
         ),
     ],
 )
-def test_validate_file(in_file: list[str], result: list[dict]) -> None:
+def test_validate_file(
+    in_file: list[str], result: list[check_file.Error]
+) -> None:
     ret = check_file.validate_file(in_file)
     print(ret)
     assert ret == result
